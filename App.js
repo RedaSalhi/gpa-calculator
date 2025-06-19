@@ -15,10 +15,10 @@ import {
     View,
 } from 'react-native';
 import { ThemeSwitcher } from './components/ThemeSwitcher';
-import { useTheme } from './hooks/useTheme';
+import { ThemeProvider, useTheme } from './hooks/useTheme';
 
-const App = () => {
-  const { theme, changeTheme, getAllThemes, currentTheme } = useTheme();
+const AppContent = () => {
+  const { theme, currentTheme } = useTheme();
   
   const [semesters, setSemesters] = useState([]);
   const [currentSemester, setCurrentSemester] = useState(0);
@@ -1059,4 +1059,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const App = () => (
+  <ThemeProvider>
+    <AppContent />
+  </ThemeProvider>
+);
+
 AppRegistry.registerComponent('main', () => App);
+
+export default App;
