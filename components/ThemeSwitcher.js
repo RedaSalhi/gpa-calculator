@@ -16,9 +16,7 @@ export const ThemeSwitcher = ({ visible, onClose }) => {
   const { theme, currentTheme, changeTheme, getAllThemes } = useTheme();
 
   const handleThemeSelect = (themeName) => {
-    console.log('ThemeSwitcher: Selecting theme:', themeName);
     changeTheme(themeName);
-    console.log('ThemeSwitcher: Theme change called');
     onClose();
   };
 

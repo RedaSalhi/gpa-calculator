@@ -1,37 +1,37 @@
-# 🎓 GPA Calculator
+# GPA Calculator
 
 A beautiful and feature-rich GPA calculator app built with React Native and Expo, featuring an interactive theme system with 7 stunning themes.
 
-## ✨ Features
+## Features
 
-### 📊 GPA Calculation
+### GPA Calculation
 - **Multiple Grading Systems**: US (4.0), ECTS European, UK Classification, Percentage
 - **Semester Management**: Add, delete, and organize courses by semester
 - **Real-time Calculations**: Instant GPA updates as you add courses
 - **Target GPA Calculator**: Calculate required GPA to reach your target
 - **Cumulative GPA Tracking**: Overall GPA across all semesters
 
-### 🎨 Interactive Theme System
+### Interactive Theme System
 - **7 Beautiful Themes**:
-  - 🌊 Classic Blue (Default)
-  - 🌙 Dark Mode
-  - 🌊 Ocean Blue
-  - 🌅 Sunset Orange
-  - 🌲 Forest Green
-  - 👑 Royal Purple
-  - ⚪ Minimal Gray
+  - Classic Blue (Default)
+  - Dark Mode
+  - Ocean Blue
+  - Sunset Orange
+  - Forest Green
+  - Royal Purple
+  - Minimal Gray
 - **Instant Theme Switching**: No reload required
 - **Persistent Storage**: Your theme choice is remembered
 - **Visual Previews**: See theme colors before applying
 
-### 📱 User Experience
+### User Experience
 - **Modern UI Design**: Clean, intuitive interface
 - **Responsive Layout**: Works on all screen sizes
 - **Data Export**: Share your GPA report
 - **Data Persistence**: All data saved locally
 - **Touch Gestures**: Long press to delete semesters
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - Node.js (v14 or higher)
@@ -63,7 +63,7 @@ A beautiful and feature-rich GPA calculator app built with React Native and Expo
    - Press `a` for Android emulator
    - Press `w` for web browser
 
-## 📱 How to Use
+## How to Use
 
 ### Adding Courses
 1. Select your grading system (US, ECTS, UK, or Percentage)
@@ -76,7 +76,7 @@ A beautiful and feature-rich GPA calculator app built with React Native and Expo
 3. Long press a semester tab to delete it
 
 ### Changing Themes
-1. Tap the 🎨 button in the header
+1. Tap the theme button in the header
 2. Browse through available themes
 3. Tap any theme to apply it instantly
 
@@ -85,7 +85,7 @@ A beautiful and feature-rich GPA calculator app built with React Native and Expo
 2. Enter your target GPA and additional credits
 3. Get the required GPA you need to maintain
 
-## 🛠️ Technical Details
+## Technical Details
 
 ### Built With
 - **React Native**: Cross-platform mobile development
@@ -113,7 +113,7 @@ GPACalculator/
 - **Persistent Storage**: Theme preferences saved locally
 - **Type-safe Colors**: Comprehensive color palette for each theme
 
-## 🎨 Theme System
+## Theme System
 
 The app features a sophisticated theme system with:
 
@@ -130,7 +130,7 @@ Each theme is carefully designed for:
 - **Aesthetics**: Beautiful, cohesive color schemes
 - **Functionality**: All features work perfectly with any theme
 
-## 📊 Grading Systems
+## Grading Systems
 
 ### US (4.0 Scale)
 - A+, A: 4.0 | A-: 3.7
@@ -150,7 +150,7 @@ Each theme is carefully designed for:
 - 90-100: 4.0 | 80-89: 3.0
 - 70-79: 2.0 | 60-69: 1.0 | 0-59: 0.0
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -158,20 +158,20 @@ Each theme is carefully designed for:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with React Native and Expo
 - Icons and design inspiration from modern mobile apps
 - Color palettes inspired by Material Design and iOS design guidelines
 
-## 📞 Support
+## Support
 
 If you have any questions or need help, please open an issue on GitHub.
 
 ---
 
-**Made with ❤️ for students everywhere**
+**Made with care for students everywhere**

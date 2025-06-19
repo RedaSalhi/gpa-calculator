@@ -18,7 +18,7 @@ import { ThemeSwitcher } from './components/ThemeSwitcher';
 import { ThemeProvider, useTheme } from './hooks/useTheme';
 
 const AppContent = () => {
-  const { theme, currentTheme } = useTheme();
+  const { theme, changeTheme, getAllThemes, currentTheme } = useTheme();
   
   const [semesters, setSemesters] = useState([]);
   const [currentSemester, setCurrentSemester] = useState(0);
@@ -33,11 +33,6 @@ const AppContent = () => {
   const [targetGPA, setTargetGPA] = useState('');
   const [targetCredits, setTargetCredits] = useState('');
   const [newSemesterName, setNewSemesterName] = useState('');
-
-  // Debug theme changes
-  useEffect(() => {
-    console.log('Theme changed to:', currentTheme);
-  }, [currentTheme]);
 
   // Grading systems
   const gradingSystems = {
@@ -325,7 +320,7 @@ const AppContent = () => {
             onPress={() => setShowThemeModal(true)} 
             style={[styles.headerButton, { backgroundColor: theme.colors.secondary }]}
           >
-            <Text style={[styles.headerButtonText, { color: theme.colors.buttonText }]}>🎨</Text>
+            <Text style={[styles.headerButtonText, { color: theme.colors.buttonText }]}>Theme</Text>
           </TouchableOpacity>
           <TouchableOpacity 
             onPress={() => setShowGradingModal(true)} 

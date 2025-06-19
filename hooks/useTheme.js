@@ -1,11 +1,11 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
 } from 'react';
 import { Themes } from '../constants/Colors.js';
 
@@ -22,6 +22,7 @@ const ThemeContext = createContext({
 export const ThemeProvider = ({ children }) => {
   const [currentTheme, setCurrentTheme] = useState('default');
   const [isLoading, setIsLoading] = useState(true);
+  const [forceUpdate, setForceUpdate] = useState(0);
 
   useEffect(() => {
     const loadSavedTheme = async () => {
@@ -41,12 +42,10 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   const changeTheme = useCallback(async (themeName) => {
-    console.log('useTheme: changeTheme called with:', themeName);
     try {
       await AsyncStorage.setItem(THEME_STORAGE_KEY, themeName);
-      console.log('useTheme: Theme saved to storage');
       setCurrentTheme(themeName);
-      console.log('useTheme: currentTheme state updated to:', themeName);
+      setForceUpdate(prev => prev + 1); // Force re-render
     } catch (error) {
       console.error('Error saving theme:', error);
     }
@@ -54,9 +53,8 @@ export const ThemeProvider = ({ children }) => {
 
   // Memoize the theme object to ensure proper re-renders
   const theme = useMemo(() => {
-    console.log('useTheme: Creating theme object for:', currentTheme);
     return Themes[currentTheme];
-  }, [currentTheme]);
+  }, [currentTheme, forceUpdate]);
 
   const getAllThemes = useCallback(() => {
     return Object.values(Themes);
