@@ -9,6 +9,7 @@ import {
     View,
 } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
+import { ThemedButton } from './ui/ThemedButton';
 
 const { width } = Dimensions.get('window');
 
@@ -142,17 +143,7 @@ export const ThemeSwitcher = ({ visible, onClose }) => {
             >
               Choose Theme
             </Text>
-            <TouchableOpacity
-              style={[
-                styles.closeButton,
-                { backgroundColor: theme.colors.error },
-              ]}
-              onPress={onClose}
-            >
-              <Text style={[styles.closeButtonText, { color: theme.colors.buttonText }]}>
-                ×
-              </Text>
-            </TouchableOpacity>
+            <ThemedButton type="error" style={styles.closeButton} onPress={onClose}>×</ThemedButton>
           </View>
           
           <ScrollView style={styles.themesList} showsVerticalScrollIndicator={false}>

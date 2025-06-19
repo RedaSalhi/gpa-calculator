@@ -14,11 +14,11 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { ThemeSwitcher } from './components/ThemeSwitcher';
+import { ThemedButton } from './components/ui/ThemedButton';
 import { ThemeProvider, useTheme } from './hooks/useTheme';
 
 const AppContent = () => {
-  const { theme, changeTheme, getAllThemes, currentTheme } = useTheme();
+  const { theme, currentTheme } = useTheme();
   
   const [semesters, setSemesters] = useState([]);
   const [currentSemester, setCurrentSemester] = useState(0);
@@ -29,10 +29,12 @@ const AppContent = () => {
   const [showGradingModal, setShowGradingModal] = useState(false);
   const [showTargetModal, setShowTargetModal] = useState(false);
   const [showSemesterModal, setShowSemesterModal] = useState(false);
-  const [showThemeModal, setShowThemeModal] = useState(false);
   const [targetGPA, setTargetGPA] = useState('');
   const [targetCredits, setTargetCredits] = useState('');
   const [newSemesterName, setNewSemesterName] = useState('');
+  const [editingSemesterIndex, setEditingSemesterIndex] = useState(null);
+  const [editingSemesterName, setEditingSemesterName] = useState('');
+  const [showEditSemesterModal, setShowEditSemesterModal] = useState(false);
 
   // Grading systems
   const gradingSystems = {
@@ -317,12 +319,6 @@ const AppContent = () => {
         <Text style={[styles.headerTitle, { color: theme.colors.buttonText }]}>GPA Calculator</Text>
         <View style={styles.headerButtons}>
           <TouchableOpacity 
-            onPress={() => setShowThemeModal(true)} 
-            style={[styles.headerButton, { backgroundColor: theme.colors.secondary }]}
-          >
-            <Text style={[styles.headerButtonText, { color: theme.colors.buttonText }]}>Theme</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
             onPress={() => setShowGradingModal(true)} 
             style={[styles.headerButton, { backgroundColor: theme.colors.secondary }]}
           >
@@ -359,29 +355,34 @@ const AppContent = () => {
         <View style={styles.semesterNav}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {semesters.map((semester, index) => (
-              <TouchableOpacity
-                key={semester.id}
-                style={[
-                  styles.semesterTab,
-                  { backgroundColor: theme.colors.card },
-                  currentSemester === index && { backgroundColor: theme.colors.primary }
-                ]}
-                onPress={() => setCurrentSemester(index)}
-                onLongPress={() => deleteSemester(index)}
-              >
-                <Text style={[
-                  styles.semesterTabText,
-                  { color: currentSemester === index ? theme.colors.buttonText : theme.colors.text }
-                ]}>
-                  {semester.name}
-                </Text>
-                <Text style={[
-                  styles.semesterGpaText,
-                  { color: currentSemester === index ? theme.colors.buttonText : theme.colors.textSecondary }
-                ]}>
-                  {calculateSemesterGPA(semester).toFixed(2)}
-                </Text>
-              </TouchableOpacity>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <TouchableOpacity
+                  key={semester.id}
+                  style={[
+                    styles.semesterTab,
+                    { backgroundColor: theme.colors.card },
+                    currentSemester === index && { backgroundColor: theme.colors.primary }
+                  ]}
+                  onPress={() => {
+                    setEditingSemesterIndex(index);
+                    setEditingSemesterName(semesters[index].name);
+                    setShowEditSemesterModal(true);
+                  }}
+                >
+                  <Text style={[
+                    styles.semesterTabText,
+                    { color: currentSemester === index ? theme.colors.buttonText : theme.colors.text }
+                  ]}>
+                    {semester.name}
+                  </Text>
+                  <Text style={[
+                    styles.semesterGpaText,
+                    { color: currentSemester === index ? theme.colors.buttonText : theme.colors.textSecondary }
+                  ]}>
+                    {calculateSemesterGPA(semester).toFixed(2)}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             ))}
             <TouchableOpacity
               style={[styles.addSemesterTab, { backgroundColor: theme.colors.accent }]}
@@ -449,28 +450,13 @@ const AppContent = () => {
             placeholderTextColor={theme.colors.textSecondary}
           />
           
-          <TouchableOpacity 
-            style={[styles.addButton, { backgroundColor: theme.colors.success }]} 
-            onPress={addCourse}
-          >
-            <Text style={[styles.addButtonText, { color: theme.colors.buttonText }]}>Add Course</Text>
-          </TouchableOpacity>
+          <ThemedButton type="success" onPress={addCourse}>Add Course</ThemedButton>
         </View>
 
         {/* Action Buttons */}
         <View style={styles.actionButtons}>
-          <TouchableOpacity 
-            style={[styles.actionButton, { backgroundColor: theme.colors.warning }]} 
-            onPress={() => setShowTargetModal(true)}
-          >
-            <Text style={[styles.actionButtonText, { color: theme.colors.buttonText }]}>Target GPA</Text>
-          </TouchableOpacity>
-          <TouchableOpacity 
-            style={[styles.actionButton, { backgroundColor: theme.colors.error }]} 
-            onPress={clearAllData}
-          >
-            <Text style={[styles.actionButtonText, { color: theme.colors.buttonText }]}>Clear All</Text>
-          </TouchableOpacity>
+          <ThemedButton type="primary" onPress={() => setShowTargetModal(true)}>Target GPA</ThemedButton>
+          <ThemedButton type="error" onPress={clearAllData}>Clear All</ThemedButton>
         </View>
 
         {/* Courses List */}
@@ -501,12 +487,12 @@ const AppContent = () => {
                     Grade: {course.grade} • Credits: {course.credits} • GPA: {course.gpaValue.toFixed(1)}
                   </Text>
                 </View>
-                <TouchableOpacity
-                  style={[styles.removeButton, { backgroundColor: theme.colors.error }]}
+                <ThemedButton
+                  type="error"
                   onPress={() => removeCourse(course.id)}
                 >
                   <Text style={[styles.removeButtonText, { color: theme.colors.buttonText }]}>×</Text>
-                </TouchableOpacity>
+                </ThemedButton>
               </View>
             ))
           )}
@@ -530,12 +516,6 @@ const AppContent = () => {
           </View>
         </View>
       </ScrollView>
-
-      {/* Theme Switcher Modal */}
-      <ThemeSwitcher 
-        visible={showThemeModal} 
-        onClose={() => setShowThemeModal(false)} 
-      />
 
       {/* Grading System Modal */}
       <Modal
@@ -624,14 +604,14 @@ const AppContent = () => {
             />
             
             <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={[styles.modalButton, { backgroundColor: theme.colors.success }]}
+              <ThemedButton
+                type="success"
                 onPress={calculateTargetGPA}
               >
                 <Text style={[styles.modalButtonText, { color: theme.colors.buttonText }]}>Calculate</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.modalButton, styles.modalCancelButton, { backgroundColor: theme.colors.error }]}
+              </ThemedButton>
+              <ThemedButton
+                type="error"
                 onPress={() => {
                   setTargetGPA('');
                   setTargetCredits('');
@@ -639,7 +619,7 @@ const AppContent = () => {
                 }}
               >
                 <Text style={[styles.modalButtonText, { color: theme.colors.buttonText }]}>Cancel</Text>
-              </TouchableOpacity>
+              </ThemedButton>
             </View>
           </View>
         </View>
@@ -673,21 +653,70 @@ const AppContent = () => {
             />
             
             <View style={styles.modalButtons}>
-              <TouchableOpacity
-                style={[styles.modalButton, { backgroundColor: theme.colors.success }]}
+              <ThemedButton
+                type="success"
                 onPress={addSemester}
               >
                 <Text style={[styles.modalButtonText, { color: theme.colors.buttonText }]}>Add</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[styles.modalButton, styles.modalCancelButton, { backgroundColor: theme.colors.error }]}
+              </ThemedButton>
+              <ThemedButton
+                type="error"
                 onPress={() => {
                   setNewSemesterName('');
                   setShowSemesterModal(false);
                 }}
               >
                 <Text style={[styles.modalButtonText, { color: theme.colors.buttonText }]}>Cancel</Text>
-              </TouchableOpacity>
+              </ThemedButton>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Edit Semester Modal */}
+      <Modal
+        visible={showEditSemesterModal}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setShowEditSemesterModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, { backgroundColor: theme.colors.card, borderColor: theme.colors.cardBorder, borderWidth: 1 }]}> 
+            <Text style={[styles.modalTitle, { color: theme.colors.text }]}>Edit Semester</Text>
+            <TextInput
+              style={[styles.modalInput, { backgroundColor: theme.colors.input, borderColor: theme.colors.inputBorder, color: theme.colors.text }]}
+              value={editingSemesterName}
+              onChangeText={setEditingSemesterName}
+              placeholder="Semester Name"
+              placeholderTextColor={theme.colors.textSecondary}
+            />
+            <View style={styles.modalButtons}>
+              <ThemedButton
+                type="success"
+                onPress={() => {
+                  const updated = [...semesters];
+                  updated[editingSemesterIndex].name = editingSemesterName.trim() || updated[editingSemesterIndex].name;
+                  setSemesters(updated);
+                  setShowEditSemesterModal(false);
+                }}
+              >
+                Save
+              </ThemedButton>
+              <ThemedButton
+                type="error"
+                onPress={() => {
+                  deleteSemester(editingSemesterIndex);
+                  setShowEditSemesterModal(false);
+                }}
+              >
+                Delete
+              </ThemedButton>
+              <ThemedButton
+                type="secondary"
+                onPress={() => setShowEditSemesterModal(false)}
+              >
+                Cancel
+              </ThemedButton>
             </View>
           </View>
         </View>
@@ -855,39 +884,10 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     backgroundColor: '#fff',
   },
-  addButton: {
-    backgroundColor: '#4CAF50',
-    borderRadius: 8,
-    padding: 15,
-    alignItems: 'center',
-  },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
-  },
-  actionButton: {
-    flex: 1,
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginHorizontal: 5,
-  },
-  targetButton: {
-    backgroundColor: '#FF9800',
-  },
-  clearButton: {
-    backgroundColor: '#f44336',
-  },
-  actionButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
   },
   coursesSection: {
     backgroundColor: 'white',
@@ -935,15 +935,6 @@ const styles = StyleSheet.create({
   courseDetails: {
     fontSize: 14,
     color: '#666',
-  },
-  removeButton: {
-    backgroundColor: '#f44336',
-    borderRadius: 15,
-    width: 30,
-    height: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginLeft: 10,
   },
   removeButtonText: {
     color: 'white',
@@ -1035,17 +1026,6 @@ const styles = StyleSheet.create({
   modalButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  modalButton: {
-    flex: 1,
-    backgroundColor: '#4CAF50',
-    padding: 15,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginHorizontal: 5,
-  },
-  modalCancelButton: {
-    backgroundColor: '#666',
   },
   modalButtonText: {
     color: 'white',
